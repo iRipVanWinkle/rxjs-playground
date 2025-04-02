@@ -1,0 +1,14 @@
+.node {
+  min-width: 250px;
+  border-radius: 10px;
+  border: 1px solid #5f6b7a;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.node.selected {
+  border: 1px solid #0972d3;
+  box-shadow:
+    0px -10px 20px 0px rgba(0, 0, 0, 0.1),
+    0px 10px 20px 0px rgba(0, 0, 0, 0.1);
+}
