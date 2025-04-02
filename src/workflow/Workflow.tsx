@@ -113,7 +113,7 @@ export function Workflow() {
   return (
     <ReactFlow className="workflow" fitView nodesDraggable nodes={nodes} edges={edges} onNodesChange={onNodesChange} nodeTypes={nodeTypes}
       onEdgesChange={onEdgesChange} onConnect={onConnect}>
-      <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} />
+      {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
       <Background />
     </ReactFlow>
   );

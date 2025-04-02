@@ -13,6 +13,7 @@ export function CombineLatestNode(props: NodeProps) {
 
   return (
     <div className={className}>
+      
       <div>Combine Latest {useNodeId()}</div>
 
       <Handle type="target" position={Position.Top}></Handle>
