@@ -1,0 +1,44 @@
+.node {
+  min-width: 250px;
+  border-radius: 10px;
+  border: 1px solid #5f6b7a;
+  background: #fff;
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+.node.selected {
+  border: 1px solid #0972d3;
+  box-shadow:
+    0px -10px 20px 0px rgba(0, 0, 0, 0.1),
+    0px 10px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.node-header {
+  padding: 3px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.node-content {
+  padding: 3px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.node-footer {
+  background-color:#f8f8f8;
+  padding: 3px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.node-footer-tools {
+  display: flex;
+  gap: 8px;
+}
