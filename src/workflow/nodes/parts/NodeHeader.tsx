@@ -1,15 +1,11 @@
-import { useNodeId } from 'reactflow';
-
-import styles from '../Node.module.css';
-
 type NodeHeaderProps = {
     id: string,
     name: string
 }
 
 export function NodeHeader({id, name}: NodeHeaderProps) {
-    return <div className={styles['node-header']}>
-        <div>#{id}</div>
-        <div>{name}</div>
+    return <div className={'flex justify-between p-1'}>
+      <div>{name}</div>
+      <div className='text-sm'>#{id}</div>
     </div>
 }

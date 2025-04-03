@@ -1,22 +1,22 @@
-import { useNodeId } from 'reactflow';
-
 import styles from '../Node.module.css';
-import { Button, SpaceBetween } from '@cloudscape-design/components';
+import { Button } from '@/components/ui/button';
+import { Pencil, Play, Trash } from 'lucide-react';
 
 type NodeFooterProps = {
     id: string,
-    name: string,
-    type: string
-}
+    type: string,
+    onRun?: () => void,
+    onStop?: () => void
+} 
 
-export function NodeFooter({ id, name, type }: NodeFooterProps) {
-    return <div className={styles['node-footer']}>
-        <div>
-            {type === 'subscriberNode' && <Button iconName="play" iconAlt="Run" variant="icon" />}
+export function NodeFooter({ id, type, onRun, onStop }: NodeFooterProps) {
+    return <div className={'rounded-b-md bg-gray-100 p-1 flex justify-between -mx-3 -mt-2 border-b'}>
+        <div> 
+            {type === 'subscriberNode' && <Button variant="outline" size="sm" onClick={onRun}><Play /></Button>}
         </div>
         <div className={styles['node-footer-tools']}>
-            <Button iconName="edit" iconAlt="Edit" variant="icon" />
-            <Button iconName="remove" iconAlt="Remove" variant="icon" />
+          <Button variant="outline" size="sm"><Pencil /></Button>
+          <Button variant="outline" size="sm"><Trash /></Button>
         </div>
     </div>
 }

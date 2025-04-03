@@ -1,17 +1,17 @@
 import { Handle, NodeProps, Position } from "@xyflow/react";
-import { combineLatest, Observable } from "rxjs";
+import { combineLatest, Observable, race } from "rxjs";
 import { NodeHeader } from "./parts/NodeHeader";
 import { NodeContent } from "./parts/NodeContent";
 import { NodeFooter } from "./parts/NodeFooter";
 import { NodeContainer } from "./parts/NodeContainer";
 
-export function CombineLatestNode(props: NodeProps) {
+export function RaceNode(props: NodeProps) {
   const { id, data, type } = props;
 
   return (
     <NodeContainer>
 
-      <NodeHeader id={id} name="combineLatest()"></NodeHeader>
+      <NodeHeader id={id} name="race()"></NodeHeader>
 
       <NodeContent value={data?.value}></NodeContent>
 
@@ -24,6 +24,6 @@ export function CombineLatestNode(props: NodeProps) {
 
 }
 
-CombineLatestNode.handler = (observables: Observable<unknown>[]): Observable<unknown> => {
-  return combineLatest(observables);
+RaceNode.handler = (observables: Observable<unknown>[]): Observable<unknown> => {
+  return race(observables);
 }

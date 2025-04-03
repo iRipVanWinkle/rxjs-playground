@@ -1,7 +1,8 @@
 import clsx from "clsx";
-import { NodeProps, useNodeId } from "reactflow";
+import { NodeProps, useNodeId } from "@xyflow/react";
 
 import styles from './Node.module.css';
+import { NodeContainer } from "./parts/NodeContainer";
 
 export function FromEventNode(props: NodeProps) {
   const { selected } = props;
@@ -11,9 +12,9 @@ export function FromEventNode(props: NodeProps) {
   });
 
   return (
-    <div className={className}>
+    <NodeContainer>
       <div>From Event Node {useNodeId()}</div>
-    </div>
+    </NodeContainer>
   );
 
 }

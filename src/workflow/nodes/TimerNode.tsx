@@ -1,32 +1,35 @@
 import clsx from "clsx";
-import { Handle, NodeProps, Position, useNodeId } from "reactflow";
+import { Handle, NodeProps, Position, useNodeId } from "@xyflow/react";
 
 import styles from './Node.module.css';
 import { Observable, timer } from "rxjs";
-import { NodeHeader } from "./parts/NodeHeader";
+// import { NodeHeader } from "./parts/NodeHeader";
 import { NodeContent } from "./parts/NodeContent";
 import { NodeFooter } from "./parts/NodeFooter";
+import { NodeContainer } from "./parts/NodeContainer";
+import { BaseNode } from "@/components/flow/BaseNode";
+import { NodeHeader } from "./parts/NodeHeader";
+
 
 export function TimerNode(props: NodeProps) {
-  const { id, selected } = props;
-  
-  const className = clsx(styles.node, {
-    [styles.selected]: selected,
-  });
+  const { id, type, selected, data } = props;
 
   return (
-    <div className={className}>
+    <BaseNode>
       <NodeHeader id={id} name="timer()"></NodeHeader>
 
-      <NodeContent id={id} name="timer()"></NodeContent>
+      <NodeContent value={data?.value}></NodeContent>
 
-      <NodeFooter id={id} name="timer()"></NodeFooter>
+      <NodeFooter id={id} type={type}></NodeFooter>
       
-      <Handle type="source" position={Position.Right} ></Handle>
-    </div>
+      <Handle type="source" position={Position.Bottom} ></Handle>
+    </BaseNode>
   );
 }
 
+let i = 0;
+
 TimerNode.handler = (observable: Observable<unknown>): Observable<unknown> => {
-  return timer(0, 1000);
+  i++;
+  return timer(0, i % 2 ? 1000 : 1750);
 }

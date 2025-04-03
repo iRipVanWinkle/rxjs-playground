@@ -1,14 +1,11 @@
-import { useNodeId } from 'reactflow';
-
 import styles from '../Node.module.css';
 
 type NodeContentProps = {
-    id: string,
-    name: string
+  value?: string
 }
 
-export function NodeContent({id, name}: NodeContentProps) {
-    return <div className={styles['node-content']}>
-        
-    </div>
+export function NodeContent({ value }: NodeContentProps) {
+  return <div className={styles['node-content']}>
+    {value !== undefined ? <span>value: {JSON.stringify(value)}</span> : <span>&nbsp;</span>}
+  </div>
 }

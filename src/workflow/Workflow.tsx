@@ -1,12 +1,16 @@
-import ReactFlow, { Background, Edge, Node, MiniMap, useNodesState, useEdgesState, addEdge, Connection } from 'reactflow';
+import { Background, Edge, Node, MiniMap, useNodesState, useEdgesState, addEdge, Connection, ReactFlow } from '@xyflow/react';
 
-import 'reactflow/dist/style.css';
+import '@xyflow/react/dist/style.css';
 import { FromEventNode } from './nodes/FromEventNode';
 import { TimerNode } from './nodes/TimerNode';
 import { TapNode } from './nodes/TapNode';
 import { SubscriberNode } from './nodes/SubscriberNode';
 import { useCallback } from 'react';
 import { CombineLatestNode } from './nodes/CombineLatestNode';
+import { RaceNode } from './nodes/RaceNode';
+import { ZipNode } from './nodes/ZipNode';
+import { ParamEdge } from './edges/ParamEdge';
+import { PipeEdge } from './edges/PipeEdge';
 
 const initialNodes: Node[] = [
   {
@@ -14,8 +18,8 @@ const initialNodes: Node[] = [
     type: "timer",
     data: {},
     position: {
-      x: -179.89288276561302,
-      y: -99.36962027950509
+      x: -321.3616711411307,
+      y: -164.86442971261513
     },
   },
   {
@@ -23,8 +27,8 @@ const initialNodes: Node[] = [
     type: "timer",
     data: {},
     position: {
-      x: -186.57720378737977,
-      y: -254.8619590635115
+      x: -37.90398637422,
+      y: -298.08853328936414
     },
   },
   {
@@ -38,11 +42,11 @@ const initialNodes: Node[] = [
   },
   {
     id: "3",
-    type: "combineLatest",
+    type: "raceNode",
     data: {},
     position: {
-      x: -22.132201863189806,
-      y: -24.693626611653936
+      x: 223.91846434848622,
+      y: -37.643661675426365
     }
   },
   {
@@ -50,8 +54,8 @@ const initialNodes: Node[] = [
     type: "tapNode",
     data: {},
     position: {
-      x: 44.609964526363214,
-      y: 74.32731867338322
+      x: 224.73317950428878,
+      y: 109.64559612003526
     }
   },
   {
@@ -59,36 +63,41 @@ const initialNodes: Node[] = [
     type: "subscriberNode",
     data: {},
     position: {
-      x: 93.95086402161758,
-      y: 172.955893533342
+      x: 225.80576648911858,
+      y: 253.01065574575333
     }
   }
 ];
 const initialEdges: Edge[] = [
   {
-      "source": "1",
-      "target": "2",
-      "id": "reactflow__edge-1-2"
+    "source": "1",
+    "target": "2",
+    "id": "reactflow__edge-1-2",
+    type: "pipeEdge"
   },
   {
-      "source": "0",
-      "target": "3",
-      "id": "reactflow__edge-0-3"
+    "source": "0",
+    "target": "3",
+    "id": "reactflow__edge-0-3",
+    type: "paramEdge"
   },
   {
-      "source": "2",
-      "target": "3",
-      "id": "reactflow__edge-2-3"
+    "source": "2",
+    "target": "3",
+    "id": "reactflow__edge-2-3",
+    type: "paramEdge"
   },
   {
-      "source": "3",
-      "target": "4",
-      "id": "reactflow__edge-3-4"
+    "source": "3",
+    "target": "4",
+    "id": "reactflow__edge-3-4",
+    type: "pipeEdge"
   },
   {
-      "source": "4",
-      "target": "5",
-      "id": "reactflow__edge-4-5"
+    "source": "4",
+    "target": "5",
+    "id": "reactflow__edge-4-5",
+    type: "pipeEdge"
   }
 ];
 
@@ -96,8 +105,15 @@ export const nodeTypes = {
   fromEvent: FromEventNode,
   timer: TimerNode,
   combineLatest: CombineLatestNode,
+  raceNode: RaceNode,
+  zipNode: ZipNode,
   tapNode: TapNode,
   subscriberNode: SubscriberNode,
+}
+
+export const edgeTypes = {
+  paramEdge: ParamEdge,
+  pipeEdge: PipeEdge
 }
 
 export function Workflow() {
@@ -111,8 +127,17 @@ export function Workflow() {
   );
 
   return (
-    <ReactFlow className="workflow" fitView nodesDraggable nodes={nodes} edges={edges} onNodesChange={onNodesChange} nodeTypes={nodeTypes}
-      onEdgesChange={onEdgesChange} onConnect={onConnect}>
+    <ReactFlow
+      className="workflow"
+      fitView
+      nodesDraggable
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}>
       {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
       <Background />
     </ReactFlow>
