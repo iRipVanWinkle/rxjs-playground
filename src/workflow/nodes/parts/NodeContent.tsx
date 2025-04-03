@@ -1,7 +1,7 @@
 import styles from '../Node.module.css';
 
 type NodeContentProps = {
-  value?: string
+  value?: unknown
 }
 
 export function NodeContent({ value }: NodeContentProps) {

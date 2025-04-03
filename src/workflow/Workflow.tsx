@@ -1,6 +1,5 @@
 import { Background, Edge, Node, useNodesState, useEdgesState, addEdge, Connection, ReactFlow } from '@xyflow/react';
 
-import '@xyflow/react/dist/style.css';
 import { FromEventNode } from './nodes/FromEventNode';
 import { TimerNode } from './nodes/TimerNode';
 import { TapNode } from './nodes/TapNode';
@@ -12,6 +11,9 @@ import { ZipNode } from './nodes/ZipNode';
 import { ParamEdge } from './edges/ParamEdge';
 import { PipeEdge } from './edges/PipeEdge';
 import { Markers } from './markers/Markers';
+
+import '@xyflow/react/dist/style.css';
+import './Workflow.module.css';
 
 const initialNodes: Node[] = [
   {

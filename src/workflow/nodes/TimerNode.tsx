@@ -12,7 +12,7 @@ import { NodeHeader } from "./parts/NodeHeader";
 
 
 export function TimerNode(props: NodeProps) {
-  const { id, type, selected, data } = props;
+  const { id, type, data } = props;
 
   return (
     <NodeContainer {...props}>

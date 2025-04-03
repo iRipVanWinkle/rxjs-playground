@@ -22,8 +22,8 @@ export function Markers() {
           fill="none"
           points="-5,-4 0,0 -5,4"
           style={{
-            stroke: '#424650',
-            strokeWidth: 1,
+            stroke: 'var(--xy-edge-stroke, var(--xy-edge-stroke-default))',
+            strokeWidth: 'var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default))',
           }}
         ></polyline>
       </marker>
@@ -37,9 +37,10 @@ export function Markers() {
         refX="0"
         refY="0"
       >
-        <circle cx="0" cy="0" r="3" style={{
-          stroke: '#424650',
-          strokeWidth: 1,
+        <circle cx="1" cy="0" r="3"  style={{
+          fill: 'var(--xy-edge-stroke, var(--xy-edge-stroke-default))',
+          stroke: 'var(--xy-edge-stroke, var(--xy-edge-stroke-default))',
+          strokeWidth: '0',
         }} />
       </marker>
     </defs>
