@@ -1,4 +1,4 @@
-import { Background, Edge, Node, MiniMap, useNodesState, useEdgesState, addEdge, Connection, ReactFlow } from '@xyflow/react';
+import { Background, Edge, Node, useNodesState, useEdgesState, addEdge, Connection, ReactFlow } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 import { FromEventNode } from './nodes/FromEventNode';
@@ -11,6 +11,7 @@ import { RaceNode } from './nodes/RaceNode';
 import { ZipNode } from './nodes/ZipNode';
 import { ParamEdge } from './edges/ParamEdge';
 import { PipeEdge } from './edges/PipeEdge';
+import { Markers } from './markers/Markers';
 
 const initialNodes: Node[] = [
   {
@@ -42,7 +43,7 @@ const initialNodes: Node[] = [
   },
   {
     id: "3",
-    type: "raceNode",
+    type: "combineLatest",
     data: {},
     position: {
       x: 223.91846434848622,
@@ -142,19 +143,22 @@ export function Workflow() {
   );
 
   return (
-    <ReactFlow
-      className="workflow"
-      fitView
-      nodesDraggable
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}>
-      {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
-      <Background />
-    </ReactFlow>
+    <>
+      <Markers></Markers>
+      <ReactFlow
+        className="workflow"
+        fitView
+        nodesDraggable
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}>
+        {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
+        <Background />
+      </ReactFlow>
+    </>
   );
 }
