@@ -10,13 +10,13 @@ type NodeFooterProps = {
 } 
 
 export function NodeFooter({ id, type, onRun, onStop }: NodeFooterProps) {
-    return <div className={'rounded-b-md bg-gray-100 p-1 flex justify-between -mx-3 -mt-2 border-b'}>
-        <div> 
+    return <div className={'rounded-b-md bg-gray-100 p-1 flex justify-between -mx-3 -mb-2 border-b'}>
+        {/* <div> 
             {type === 'subscriberNode' && <Button variant="outline" size="sm" onClick={onRun}><Play /></Button>}
         </div>
         <div className={styles['node-footer-tools']}>
           <Button variant="outline" size="sm"><Pencil /></Button>
           <Button variant="outline" size="sm"><Trash /></Button>
-        </div>
+        </div> */}
     </div>
 }

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { applyNodeChanges, Edge, Handle, Node, NodeProps, Position, useNodeId, useReactFlow } from "@xyflow/react";
 
 import styles from './Node.module.css';
-import { delay, find, fromEvent, Observable, tap, timer } from "rxjs";
+import { delay, finalize, find, fromEvent, Observable, tap, timer } from "rxjs";
 import { nodeTypes } from "../Workflow";
 import { NodeHeader } from "./parts/NodeHeader";
 import { NodeContent } from "./parts/NodeContent";
@@ -33,9 +33,9 @@ const constructRxJsPipeline = (nodeId: string, reverseEdgeMap: Record<string, st
   // If the node is a "source" node (no reverse edges), start the observable
   if (!reverseEdgeMap[nodeId] || reverseEdgeMap[nodeId].length === 0) {
     if (node.type && nodeTypes[node.type as string]) {
-      return nodeTypes[node.type as string].handler().pipe(tap((value) => {
-        updateNode(nodeId, { data: { value, active: true } });
-      }));
+      return nodeTypes[node.type as string].handler().pipe(
+        finalize(() => updateNode(nodeId, { data: { status: 'completed' } })),
+        tap((value) => updateNode(nodeId, { data: { value, status: 'active' } })));
     }
     throw new Error(`Unsupported source operator: ${node.type}`);
   }
@@ -48,14 +48,12 @@ const constructRxJsPipeline = (nodeId: string, reverseEdgeMap: Record<string, st
   // Combine child sources based on the operator
   if (node.type && nodeTypes[node.type as string]) {
     if (node.type === 'subscriberNode') {
-      return nodeTypes[node.type as string].handler(sources[0], (value: any) => {
-        updateNode(nodeId, { data: { value, active: true } });
-      });
+      return nodeTypes[node.type as string].handler(sources[0], (value: any) => updateNode(nodeId, { data: { value, status: 'active' } }));
     } else {
-      return nodeTypes[node.type as string].handler(sources.length === 1 ? sources[0] : sources).pipe(tap((value) => {
-        console.info(node);
-        updateNode(nodeId, { data: { value, active: true } });
-      }));
+      return nodeTypes[node.type as string].handler(sources.length === 1 ? sources[0] : sources).pipe(
+        finalize(() => updateNode(nodeId, { data: { status: 'completed' } })),
+        tap((value) => updateNode(nodeId, { data: { value, status: 'active' } }))
+      );
     }
   }
 
@@ -70,17 +68,17 @@ export function SubscriberNode(props: NodeProps) {
 
   const run = () => {
     const reverseEdgeMap = buildReverseEdgeMap(getEdges());
-    const node = findNodeById(id, getNodes());
+    // const node = findNodeById(id, getNodes());
 
     constructRxJsPipeline(id, reverseEdgeMap, getNodes(), updateNode);
-    console.log(node, reverseEdgeMap);
+    // console.log(node, reverseEdgeMap);
   }
 
   return (
     <NodeContainer>
-      <NodeHeader id={id} name="subscribe()"></NodeHeader>
+      <NodeHeader id={id} name="subscribe()" type={type} onRun={run}></NodeHeader>
       <NodeContent value={data?.value}></NodeContent>
-      <NodeFooter id={id} type={type} onRun={run}></NodeFooter>
+      <NodeFooter id={id} type={type}></NodeFooter>
       <Handle type="target" position={Position.Top} ></Handle>
     </NodeContainer>
   );

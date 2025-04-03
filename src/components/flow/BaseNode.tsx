@@ -2,10 +2,9 @@ import { forwardRef, HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
 
-export const BaseNode = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { selected?: boolean }
->(({ className, selected, ...props }, ref) => (
+export type BaseNodeProps = HTMLAttributes<HTMLDivElement> & { selected?: boolean }
+
+export const BaseNode = forwardRef<HTMLDivElement, BaseNodeProps>(({ className, selected, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(

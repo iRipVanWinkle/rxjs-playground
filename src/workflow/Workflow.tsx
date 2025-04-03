@@ -73,30 +73,45 @@ const initialEdges: Edge[] = [
     "source": "1",
     "target": "2",
     "id": "reactflow__edge-1-2",
+    data: {
+      key: 'value'
+    },
     type: "pipeEdge"
   },
   {
     "source": "0",
     "target": "3",
     "id": "reactflow__edge-0-3",
+    data: {
+      key: 'value'
+    },
     type: "paramEdge"
   },
   {
     "source": "2",
     "target": "3",
     "id": "reactflow__edge-2-3",
+    data: {
+      key: 'value'
+    },
     type: "paramEdge"
   },
   {
     "source": "3",
     "target": "4",
     "id": "reactflow__edge-3-4",
+    data: {
+      key: 'value'
+    },
     type: "pipeEdge"
   },
   {
     "source": "4",
     "target": "5",
     "id": "reactflow__edge-4-5",
+    data: {
+      key: 'value'
+    },
     type: "pipeEdge"
   }
 ];

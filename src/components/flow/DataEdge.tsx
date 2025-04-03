@@ -65,10 +65,8 @@ export function DataEdge({
           return value;
 
         case "object":
-          return JSON.stringify(value);
-
         default:
-          return "";
+          return JSON.stringify(value);;
       }
     }
   }, [data, nodeData]);
@@ -78,7 +76,7 @@ export function DataEdge({
   return (
     <>
       <BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} />
-      {data.key && (
+      {label && (
         <EdgeLabelRenderer>
           <div
             className="absolute rounded border bg-background px-1 text-foreground"

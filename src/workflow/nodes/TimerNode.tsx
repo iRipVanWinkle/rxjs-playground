@@ -15,7 +15,7 @@ export function TimerNode(props: NodeProps) {
   const { id, type, selected, data } = props;
 
   return (
-    <BaseNode>
+    <NodeContainer {...props}>
       <NodeHeader id={id} name="timer()"></NodeHeader>
 
       <NodeContent value={data?.value}></NodeContent>
@@ -23,7 +23,7 @@ export function TimerNode(props: NodeProps) {
       <NodeFooter id={id} type={type}></NodeFooter>
       
       <Handle type="source" position={Position.Bottom} ></Handle>
-    </BaseNode>
+    </NodeContainer>
   );
 }
 
