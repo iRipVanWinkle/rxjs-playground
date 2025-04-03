@@ -1,20 +1,16 @@
-import { Background, Edge, Node, useNodesState, useEdgesState, addEdge, Connection, ReactFlow } from '@xyflow/react';
+import { Background, Edge, Node, useNodesState, useEdgesState, addEdge, Connection, ReactFlow, useReactFlow, EdgeChange, EdgeTypes, Position } from '@xyflow/react';
 
-import { FromEventNode } from './nodes/FromEventNode';
-import { TimerNode } from './nodes/TimerNode';
-import { TapNode } from './nodes/TapNode';
-import { SubscriberNode } from './nodes/SubscriberNode';
 import { useCallback } from 'react';
-import { CombineLatestNode } from './nodes/CombineLatestNode';
-import { RaceNode } from './nodes/RaceNode';
-import { ZipNode } from './nodes/ZipNode';
 import { ParamEdge } from './edges/ParamEdge';
 import { PipeEdge } from './edges/PipeEdge';
 import { Markers } from './markers/Markers';
 
 import '@xyflow/react/dist/style.css';
 import './Workflow.module.css';
-import { TakeUntilNode } from './nodes/TakeUntilNode';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { OperationsSidebar } from './slidebar/OperationsSidebar';
+
+import { nodeTypes } from './nodes';
 
 // const initialNodes: Node[] = [
 //   {
@@ -141,15 +137,6 @@ const initialNodes: Node[] = [
   },
   {
     id: "2",
-    type: "tapNode",
-    data: {},
-    position: {
-      x: -35.05290940902208,
-      y: -166.55803822647235
-    }
-  },
-  {
-    id: "3",
     type: "takeUntil",
     data: {},
     position: {
@@ -158,17 +145,8 @@ const initialNodes: Node[] = [
     }
   },
   {
-    id: "4",
-    type: "tapNode",
-    data: {},
-    position: {
-      x: 224.73317950428878,
-      y: 109.64559612003526
-    }
-  },
-  {
-    id: "5",
-    type: "subscriberNode",
+    id: "3",
+    type: "subscriber",
     data: {},
     position: {
       x: 225.80576648911858,
@@ -181,6 +159,7 @@ const initialEdges: Edge[] = [
     "source": "1",
     "target": "2",
     "id": "reactflow__edge-1-2",
+    targetHandle: 'top',
     data: {
       key: 'value'
     },
@@ -188,7 +167,7 @@ const initialEdges: Edge[] = [
   },
   {
     "source": "0",
-    "target": "3",
+    "target": "2",
     "id": "reactflow__edge-0-3",
     targetHandle: 'left',
     data: {
@@ -199,43 +178,14 @@ const initialEdges: Edge[] = [
   {
     "source": "2",
     "target": "3",
-    targetHandle: 'top',
+    
     "id": "reactflow__edge-2-3",
     data: {
       key: 'value'
     },
     type: "pipeEdge"
   },
-  {
-    "source": "3",
-    "target": "4",
-    "id": "reactflow__edge-3-4",
-    data: {
-      key: 'value'
-    },
-    type: "pipeEdge"
-  },
-  {
-    "source": "4",
-    "target": "5",
-    "id": "reactflow__edge-4-5",
-    data: {
-      key: 'value'
-    },
-    type: "pipeEdge"
-  }
 ];
-
-export const nodeTypes = {
-  fromEvent: FromEventNode,
-  timer: TimerNode,
-  combineLatest: CombineLatestNode,
-  raceNode: RaceNode,
-  zipNode: ZipNode,
-  tapNode: TapNode,
-  takeUntil: TakeUntilNode,
-  subscriberNode: SubscriberNode,
-}
 
 export const edgeTypes = {
   paramEdge: ParamEdge,
@@ -246,29 +196,68 @@ export function Workflow() {
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Edge) => {
+      params.type = params.targetHandle === Position.Left ? 'paramEdge' : 'pipeEdge'
+      setEdges((eds) => addEdge(params, eds))
+    },
     [setEdges],
   );
 
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+
+      const type = event.dataTransfer.getData('operationKey');
+
+      const newNode = {
+        id: String(Math.random() * Math.random() * Math.random()),
+        position: screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY,
+        }),
+        data: {  },
+        type: type
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [screenToFlowPosition, setNodes],
+  );
+
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+  }, []);
+  
+
   return (
     <>
-      <Markers></Markers>
-      <ReactFlow
-        className="workflow"
-        fitView
-        nodesDraggable
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}>
-        {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
-        <Background />
-      </ReactFlow>
+      <OperationsSidebar />
+      <main className="h-screen w-screen">
+        <Markers></Markers>
+        <ReactFlow
+          className="workflow"
+          fitView
+          nodesDraggable
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}>
+          {/* <MiniMap zoomable pannable position="bottom-left" ariaLabel={null} /> */}
+          <SidebarTrigger className='react-flow__panel' />
+          <Background />
+        </ReactFlow>
+      </main>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { Handle, NodeProps, Position } from "@xyflow/react";
-import { combineLatest, Observable, race } from "rxjs";
+import { Observable, race } from "rxjs";
 import { NodeHeader } from "./parts/NodeHeader";
 import { NodeContent } from "./parts/NodeContent";
 import { NodeFooter } from "./parts/NodeFooter";
@@ -24,6 +24,17 @@ export function RaceNode(props: NodeProps) {
 
 }
 
-RaceNode.handler = (observables: Observable<unknown>[]): Observable<unknown> => {
+function handler(observables: Observable<unknown>[]): Observable<unknown> {
   return race(observables);
 }
+const key = "race";
+const title = "race()";
+const description = "";
+
+Object.assign(RaceNode, {
+  key,
+  title,
+  description,
+  handler,
+});
+

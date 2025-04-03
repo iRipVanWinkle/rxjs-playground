@@ -21,9 +21,19 @@ export function ZipNode(props: NodeProps) {
       <Handle type="source" position={Position.Bottom}></Handle>
     </NodeContainer>
   );
-
 }
 
-ZipNode.handler = (observables: Observable<unknown>[]): Observable<unknown> => {
+
+function handler(observables: Observable<unknown>[]): Observable<unknown> {
   return zip(observables);
 }
+const key = "zip";
+const title = "zip()";
+const description = "Combines multiple observables into one by emitting an array of their latest values.";
+
+Object.assign(ZipNode, {
+  key,
+  title,
+  description,
+  handler,
+});
