@@ -24,6 +24,6 @@ export function CombineLatestNode(props: NodeProps) {
 
 }
 
-CombineLatestNode.handler = (observables: Observable<unknown>[]): Observable<unknown> => {
-  return combineLatest(observables);
+CombineLatestNode.handler = (observables: Observable<unknown>[], params: Observable<unknown>[]): Observable<unknown> => {
+  return combineLatest(params);
 }

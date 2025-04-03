@@ -23,8 +23,8 @@ export function TapNode(props: NodeProps) {
 
       <NodeFooter id={id} type={type}></NodeFooter>
 
-      <Handle type="target" position={Position.Top} ></Handle>
-      <Handle type="source" position={Position.Bottom} ></Handle>
+      <Handle id={Position.Top} type="target" position={Position.Top} ></Handle>
+      <Handle id={Position.Bottom} type="source" position={Position.Bottom} ></Handle>
     </NodeContainer>
   );
 }

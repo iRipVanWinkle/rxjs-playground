@@ -7,7 +7,6 @@ import { Observable, timer } from "rxjs";
 import { NodeContent } from "./parts/NodeContent";
 import { NodeFooter } from "./parts/NodeFooter";
 import { NodeContainer } from "./parts/NodeContainer";
-import { BaseNode } from "@/components/flow/BaseNode";
 import { NodeHeader } from "./parts/NodeHeader";
 
 
@@ -22,7 +21,7 @@ export function TimerNode(props: NodeProps) {
 
       <NodeFooter id={id} type={type}></NodeFooter>
       
-      <Handle type="source" position={Position.Bottom} ></Handle>
+      <Handle id={Position.Bottom}type="source" position={Position.Bottom} ></Handle>
     </NodeContainer>
   );
 }
@@ -31,5 +30,5 @@ let i = 0;
 
 TimerNode.handler = (observable: Observable<unknown>): Observable<unknown> => {
   i++;
-  return timer(0, i % 2 ? 1000 : 1750);
+  return timer(i % 2 ? 500 : 5000, i % 2 ? 1000 : 500);
 }

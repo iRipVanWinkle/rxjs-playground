@@ -14,6 +14,111 @@ import { Markers } from './markers/Markers';
 
 import '@xyflow/react/dist/style.css';
 import './Workflow.module.css';
+import { TakeUntilNode } from './nodes/TakeUntilNode';
+
+// const initialNodes: Node[] = [
+//   {
+//     id: "0",
+//     type: "timer",
+//     data: {},
+//     position: {
+//       x: -321.3616711411307,
+//       y: -164.86442971261513
+//     },
+//   },
+//   {
+//     id: "1",
+//     type: "timer",
+//     data: {},
+//     position: {
+//       x: -37.90398637422,
+//       y: -298.08853328936414
+//     },
+//   },
+//   {
+//     id: "2",
+//     type: "tapNode",
+//     data: {},
+//     position: {
+//       x: -35.05290940902208,
+//       y: -166.55803822647235
+//     }
+//   },
+//   {
+//     id: "3",
+//     type: "combineLatest",
+//     data: {},
+//     position: {
+//       x: 223.91846434848622,
+//       y: -37.643661675426365
+//     }
+//   },
+//   {
+//     id: "4",
+//     type: "tapNode",
+//     data: {},
+//     position: {
+//       x: 224.73317950428878,
+//       y: 109.64559612003526
+//     }
+//   },
+//   {
+//     id: "5",
+//     type: "subscriberNode",
+//     data: {},
+//     position: {
+//       x: 225.80576648911858,
+//       y: 253.01065574575333
+//     }
+//   }
+// ];
+// const initialEdges: Edge[] = [
+//   {
+//     "source": "1",
+//     "target": "2",
+//     "id": "reactflow__edge-1-2",
+//     data: {
+//       key: 'value'
+//     },
+//     type: "pipeEdge"
+//   },
+//   {
+//     "source": "0",
+//     "target": "3",
+//     "id": "reactflow__edge-0-3",
+//     data: {
+//       key: 'value'
+//     },
+//     type: "paramEdge"
+//   },
+//   {
+//     "source": "2",
+//     "target": "3",
+//     "id": "reactflow__edge-2-3",
+//     data: {
+//       key: 'value'
+//     },
+//     type: "paramEdge"
+//   },
+//   {
+//     "source": "3",
+//     "target": "4",
+//     "id": "reactflow__edge-3-4",
+//     data: {
+//       key: 'value'
+//     },
+//     type: "pipeEdge"
+//   },
+//   {
+//     "source": "4",
+//     "target": "5",
+//     "id": "reactflow__edge-4-5",
+//     data: {
+//       key: 'value'
+//     },
+//     type: "pipeEdge"
+//   }
+// ];
 
 const initialNodes: Node[] = [
   {
@@ -45,7 +150,7 @@ const initialNodes: Node[] = [
   },
   {
     id: "3",
-    type: "combineLatest",
+    type: "takeUntil",
     data: {},
     position: {
       x: 223.91846434848622,
@@ -85,6 +190,7 @@ const initialEdges: Edge[] = [
     "source": "0",
     "target": "3",
     "id": "reactflow__edge-0-3",
+    targetHandle: 'left',
     data: {
       key: 'value'
     },
@@ -93,11 +199,12 @@ const initialEdges: Edge[] = [
   {
     "source": "2",
     "target": "3",
+    targetHandle: 'top',
     "id": "reactflow__edge-2-3",
     data: {
       key: 'value'
     },
-    type: "paramEdge"
+    type: "pipeEdge"
   },
   {
     "source": "3",
@@ -126,6 +233,7 @@ export const nodeTypes = {
   raceNode: RaceNode,
   zipNode: ZipNode,
   tapNode: TapNode,
+  takeUntil: TakeUntilNode,
   subscriberNode: SubscriberNode,
 }
 
