@@ -8,9 +8,8 @@ type NodeContentProps = {
   children?: ReactNode
 }
 
-export function NodeContent({ value, children }: NodeContentProps) {
+export function NodeContent({ children }: NodeContentProps) {
   return <div>
     {children}
-    {value !== undefined ? <span>value: {JSON.stringify(value)}</span> : <span>&nbsp;</span>}
   </div>
 }

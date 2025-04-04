@@ -16,14 +16,14 @@ const buildReverseEdgeMap = (edges: Edge[]): ReverseEdgeMapType => {
       };
     }
 
-    const field = edge.type === 'paramEdge' ? 'params' : 'pipes'
+    const field = edge.type === 'param' ? 'params' : 'pipes'
     reverseMap[edge.target][field].push(edge.source);
   }
   return reverseMap;
 };
 
 export function useRun() {
-  const { getEdges, updateNode, getNode } = useReactFlow();
+  const { getEdges, updateNode, getNode, updateNodeData } = useReactFlow();
   const id = useNodeId();
 
   console.info(nodeTypes);
@@ -47,12 +47,9 @@ export function useRun() {
 
     // If the node is a "source" node (no reverse edges), start the observable
     if (!reverseEdgeMap[nodeId] || (reverseEdgeMap[nodeId].params.length === 0 && reverseEdgeMap[nodeId].pipes.length === 0)) {
-      return operation({source: undefined, params: undefined, config: {}}).pipe(
-        finalize(() => {
-          const node = getNode(nodeId)!;
-          updateNode(nodeId, { data: { ...node.data, status: 'completed' } });
-        }),
-        tap((value) => updateNode(nodeId, { data: { value, status: 'active' } }))
+      return operation.handler({source: undefined, params: undefined, config: node.data}).pipe(
+        finalize(() => updateNodeData(nodeId, () => ({ status: 'completed' }))),
+        tap((value) => updateNodeData(nodeId, () => ({ value, status: 'active' })))
       );
     }
 
@@ -60,40 +57,33 @@ export function useRun() {
     const pipes = reverseEdgeMap[nodeId].pipes.map(sourceId => constructRxJsPipeline(sourceId, reverseEdgeMap));
     const params = reverseEdgeMap[nodeId].params.map(sourceId => constructRxJsPipeline(sourceId, reverseEdgeMap));
 
-    console.info(nodeTypes);
     // Combine child sources based on the operator
     if (node.type && nodeTypes[node.type as string]) {
       if (node.type === Subscriber.key) {
-        return operation({
+        return operation.handler({
           source: pipes[0],
           params: undefined,
           config: {
             observerOrNext: {
-              next: (value: unknown) => updateNode(nodeId, { data: { value, status: 'active' } }),
-              complete: () => {
-                const node = getNode(nodeId)!;
-                updateNode(nodeId, { data: { ...node.data, status: 'completed' } })
-              }
+              next: (value: unknown) => updateNodeData(nodeId, () => ({ value, status: 'active' })),
+              complete: () => updateNodeData(nodeId, () => ({ status: 'completed' }))
             }
           }
         });
       } else {
-        return (operation({
+        return (operation.handler({
           source: pipes.length === 1 ? pipes[0] : pipes,
           params: params.length === 1 ? params[0] : params,
-          config: {}
+          config: node.data
         }) as Observable<unknown>).pipe(
-          finalize(() => {
-            const node = getNode(nodeId)!;
-            updateNode(nodeId, { data: { ...node.data, status: 'completed' } })
-          }),
-          tap((value) => updateNode(nodeId, { data: { value, status: 'active' } }))
+          finalize(() => updateNodeData(nodeId, () => ({ status: 'completed' }))),
+          tap((value) => updateNodeData(nodeId, () => ({ value, status: 'active' })))
         );
       }
     }
 
     throw new Error(`Unsupported operator: ${node.type}`);
-  }, [getNode, updateNode]);
+  }, [getNode, updateNodeData]);
 
   const run = useCallback(() => {
     const reverseEdgeMap = buildReverseEdgeMap(getEdges());

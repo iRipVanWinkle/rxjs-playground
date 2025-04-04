@@ -12,11 +12,19 @@ export type OperationFunctionParams<S = FullSourceType, P = FullParamsType, C = 
 
 export type OperationFunction<C = unknown, R = Observable<unknown>> = {
   (params?: OperationFunctionParams<FullSourceType, FullParamsType, C>): R;
+};
+
+export type OperationFunctions = Record<string, OperationFunction>;
+
+export type Operation = {
+  handler: OperationFunction
   Node: () => ReactNode;
   key: string;
   title: string;
   group: string;
   description: string;
-};
+}
 
-export type OperationFunctions = Record<string, OperationFunction>;
+export type BaseOperationData = {
+  value?: unknown
+}

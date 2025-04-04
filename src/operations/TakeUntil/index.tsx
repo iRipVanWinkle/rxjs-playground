@@ -1,18 +1,17 @@
-import { OperationFunction } from "@/models";
 import TakeUntil from "./TakeUntil";
 import TakeUntilNode from "./TakeUntilNode";
+import { Operation } from "@/models/OperationFunction";
 
 const key = "takeUntil";
 const title = "takeUntil()";
 const description = "Emits values from the source observable until a notifier observable emits a value, at which point it completes.";
 const group = "Filtering Operators";
 
-Object.assign(TakeUntil, {
+export default {
   key,
   title,
   group,
   description,
+  handler: TakeUntil,
   Node: TakeUntilNode
-});
-
-export default TakeUntil as OperationFunction;
+} as Operation;

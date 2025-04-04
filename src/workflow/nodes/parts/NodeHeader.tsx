@@ -33,12 +33,12 @@ export function NodeHeader({ id, name, type, edit, onRun, onEdit, editForm }: No
 
         <Popover>
           <PopoverTrigger asChild>
-            <NodeHeaderAction variant="ghost" label="Delete node">
+            <NodeHeaderAction variant="ghost" label="Edit node">
               <Pencil />
             </NodeHeaderAction>
           </PopoverTrigger>
           <PopoverContent>
-            {editForm}
+            { editForm }
           </PopoverContent>
         </Popover>
 

@@ -163,7 +163,7 @@ const initialEdges: Edge[] = [
     data: {
       key: 'value'
     },
-    type: "pipeEdge"
+    type: "pipe"
   },
   {
     "source": "0",
@@ -173,7 +173,7 @@ const initialEdges: Edge[] = [
     data: {
       key: 'value'
     },
-    type: "paramEdge"
+    type: "param"
   },
   {
     "source": "2",
@@ -183,13 +183,13 @@ const initialEdges: Edge[] = [
     data: {
       key: 'value'
     },
-    type: "pipeEdge"
+    type: "pipe"
   },
 ];
 
 export const edgeTypes = {
-  paramEdge: ParamEdge,
-  pipeEdge: PipeEdge
+  param: ParamEdge,
+  pipe: PipeEdge
 }
 
 export function Workflow() {
@@ -199,9 +199,14 @@ export function Workflow() {
   const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
-    (params: Edge) => {
-      params.type = params.targetHandle === Position.Left ? 'paramEdge' : 'pipeEdge'
-      setEdges((eds) => addEdge(params, eds))
+    (connector: Connection) => {
+      setEdges((eds) => addEdge({
+        ...connector,
+        type: connector.targetHandle === Position.Left ? 'param' : 'pipe',
+        data: {
+          key: 'value'
+        },
+      }, eds))
     },
     [setEdges],
   );
